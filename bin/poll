@@ -27,10 +27,11 @@ save() {
 	printf '{"commit":"'$1'", "_rev":"'$2'"}' | curl -T- $doc
 }
 
-curl $doc >built.json
+curl -sS $doc >built.json
 last=`field commit <built.json`
 curl -sSLob.tar.gz https://github.com/kr/beanstalkd/tarball/master
 this=`tar ztf b.tar.gz|head -n1`
+tar zxf b.tar.gz
 if test "$this" -a $this != $last
 then build $this; save $this `field _rev <built.json`
 fi
