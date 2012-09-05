@@ -1,6 +1,10 @@
-#!/bin/bash -ex
+#!/bin/bash -e
 
+url=http://scan.coverity.com/self-build/6.0.2/cov-analysis-linux64-6.0.2.tar.gz
+file=$2/c.tar.gz
+
+if ! test -e $file
+then curl -sSL $url >$2/c.tar.gz
+fi
 cd $1
-
-curl -sSLO 'http://scan.coverity.com/self-build/6.0.2/cov-analysis-linux64-6.0.2.tar.gz'
-tar zxf cov-analysis-linux64-6.0.2.tar.gz
+tar zxf $file
