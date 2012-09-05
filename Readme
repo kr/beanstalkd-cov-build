@@ -1,0 +1,4 @@
+This is a heroku app for submitting builds of beanstalkd to coverity scan.
+
+http://kr.github.com/beanstalkd/
+http://scan.coverity.com/
