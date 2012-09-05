@@ -3,6 +3,7 @@
 url=http://scan.coverity.com/self-build/6.0.2/cov-analysis-linux64-6.0.2.tar.gz
 file=$2/c.tar.gz
 
+mkdir -p $2
 if ! test -e $file
 then curl -sSL $url >$2/c.tar.gz
 fi
