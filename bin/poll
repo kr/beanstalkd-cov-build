@@ -1,0 +1,36 @@
+#!/bin/bash -e
+
+doc=$CLOUDANT_URL/beanstalkd/built
+
+build() {
+	cd $1
+	cov-build --dir cov-int make CC=gcc
+	{
+		echo Name: Keith Rarick
+		echo Email: kr@xph.us
+		echo Project Name: beanstalkd
+	} >README
+	tar zcf beanstalkd.tgz README cov-int
+	curl -sS \
+		-F file=@beanstalkd.tgz \
+		-F project=$COVPROJ \
+		-F password=$COVPASS \
+		-F email=$COVMAIL \
+		http://scan5.coverity.com/cgi-bin/upload.py
+}
+
+field() {
+	sed 's/.*"'$1'":"\([^"]*\)".*/\1/'
+}
+
+save() {
+	printf '{"commit":"'$1'", "_rev":"'$2'"}' | curl -T- $doc
+}
+
+curl $doc >built.json
+last=`field commit <built.json`
+curl -sSLob.tar.gz https://github.com/kr/beanstalkd/tarball/master
+this=`tar ztf b.tar.gz|head -n1`
+if test "$this" -a $this != $last
+then build $this; save $this `field _rev <built.json`
+fi
