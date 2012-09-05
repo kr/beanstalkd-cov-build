@@ -1,0 +1,6 @@
+#!/bin/bash -ex
+
+cd $1
+
+curl -sSLO 'http://scan.coverity.com/self-build/6.0.2/cov-analysis-linux64-6.0.2.tar.gz'
+tar zxf cov-analysis-linux64-6.0.2.tar.gz
