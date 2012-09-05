@@ -3,7 +3,6 @@
 doc=$CLOUDANT_URL/beanstalkd/built
 
 build() {
-	cd $1
 	cov-build --dir cov-int make CC=gcc
 	{
 		echo Name: Keith Rarick
@@ -29,9 +28,10 @@ save() {
 
 curl -sS $doc >built.json
 last=`field commit <built.json`
-curl -sSLob.tar.gz https://github.com/kr/beanstalkd/tarball/master
-this=`tar ztf b.tar.gz|head -n1`
-tar zxf b.tar.gz
+dbrev=`field _rev <built.json`
+git clone https://github.com/kr/beanstalkd.git
+cd beanstalkd
+this=`git rev-parse HEAD`
 if test "$this" -a $this != $last
-then build $this; save $this `field _rev <built.json`
+then build; save $this $dbrev
 fi
