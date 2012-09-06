@@ -2,6 +2,11 @@
 
 doc=$CLOUDANT_URL/beanstalkd/built
 
+branch=master
+if test $# -gt 0
+then branch=$1
+fi
+
 build() {
 	cov-build --dir cov-int make CC=gcc
 	{
@@ -29,7 +34,7 @@ save() {
 curl -sS $doc >built.json
 last=`field commit <built.json`
 dbrev=`field _rev <built.json`
-git clone https://github.com/kr/beanstalkd.git
+git clone -b $branch https://github.com/kr/beanstalkd.git
 cd beanstalkd
 this=`git rev-parse HEAD`
 if test "$this" -a $this != $last
